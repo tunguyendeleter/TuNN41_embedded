@@ -1,0 +1,5 @@
+../Inc/spi.c:10:6:SPI_PeriClockControl	16	static
+../Inc/spi.c:40:6:SPI_Init	24	static
+../Inc/spi.c:103:6:SPI_Write	40	static
+../Inc/spi.c:136:6:SPI_Read	40	static
+../Inc/spi.c:168:7:SPI_GetFlagStatus	24	static

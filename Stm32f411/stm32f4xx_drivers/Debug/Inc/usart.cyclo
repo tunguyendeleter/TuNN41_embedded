@@ -1,0 +1,10 @@
+usart.c:10:6:USART_PeriClockControl	9
+usart.c:32:6:USART_Init	12
+usart.c:145:6:USART_SetBaudRate	5
+usart.c:211:7:USART_GetFlagStatus	11
+usart.c:262:6:USART_ClearFlagStatus	1
+usart.c:267:6:USART_Write	5
+usart.c:298:6:USART_Read	4
+usart.c:327:7:USART_WriteIT	3
+usart.c:359:7:USART_ReadIT	4
+usart.c:392:6:USART_IRQHandling	18

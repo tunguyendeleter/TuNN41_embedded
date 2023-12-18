@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "nvic.h": "c",
+        "s32k144xx.h": "c",
+        "lpuart.h": "c",
+        "clock.h": "c"
+    }
+}

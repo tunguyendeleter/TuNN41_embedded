@@ -1,0 +1,3 @@
+../Inc/rcc.c:6:8:RCC_GetPLLValue	4	static
+../Inc/rcc.c:11:8:RCC_GetPCLK1Value	24	static
+../Inc/rcc.c:55:8:RCC_GetPCLK2Value	24	static

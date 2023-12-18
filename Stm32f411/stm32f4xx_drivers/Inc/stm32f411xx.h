@@ -12,12 +12,13 @@
 /**
  * @brief  Define genetic macros
  */
-#define ENABLE 							1
-#define DISABLE 						0
+#define ENABLE 							1U
+#define DISABLE 						0U
 #define SET 							ENABLE
 #define RESET 							DISABLE
 #define GPIO_PIN_SET 					SET
 #define GPIO_PIN_RESET 					RESET
+#define NULL							DISABLE
 
 /**
  * @brief  Define portcode function for given GPIOx peripheral
@@ -85,6 +86,9 @@
 #define USART1_BASEADDR					(APB2_BASEADDR + 0x1000)				/*USART1 base address*/
 #define USART2_BASEADDR					(APB1_BASEADDR + 0x4400)				/*USART2 base address*/
 #define USART6_BASEADDR					(APB2_BASEADDR + 0x1400)				/*USART6 base address*/
+#define USART1							((USART_Type*)USART1_BASEADDR)			/*USART1 register pointer*/
+#define USART2							((USART_Type*)USART2_BASEADDR)			/*USART2 register pointer*/
+#define USART6							((USART_Type*)USART6_BASEADDR)			/*USART6 register pointer*/
 
 /**
  * @brief  Define base address of SPI modules
@@ -94,6 +98,12 @@
 #define SPI1_BASEADDR					(APB2_BASEADDR + 0x3000)				/*SPI1 base address*/
 #define SPI4_BASEADDR					(APB2_BASEADDR + 0x3400)				/*SPI4 base address*/
 #define SPI5_BASEADDR					(APB2_BASEADDR + 0x5000)				/*SPI5 base address*/
+#define SPI1							((SPI_Type*)SPI1_BASEADDR)				/*SPI1 register pointer*/
+#define SPI2							((SPI_Type*)SPI2_BASEADDR)				/*SPI2 register pointer*/
+#define SPI3							((SPI_Type*)SPI3_BASEADDR)				/*SPI3 register pointer*/
+#define SPI4							((SPI_Type*)SPI4_BASEADDR)				/*SPI4 register pointer*/
+#define SPI5							((SPI_Type*)SPI5_BASEADDR)				/*SPI5 register pointer*/
+
 
 /**
  * @brief  Define base address of RCC module
@@ -117,7 +127,7 @@
  * @brief  Define base address of SYSCFG module
  */
 #define Systick_BASEADDR				(0XE000E010)							/*SYSTICK base address*/
-#define SysTick							((SysTick_TypeDef*)Systick_BASEADDR)	/*SYSTICK register pointer*/
+#define SysTick							((SysTick_Type*)Systick_BASEADDR)	/*SYSTICK register pointer*/
 
 /**
 * @brief  define address of NVIC layer
@@ -178,11 +188,13 @@
 #define SPI1_CLK_EN()					(RCC->APB2ENR |= (1 << 12))				/*enable peripheral clock at SPI1*/
 #define SPI2_CLK_EN()					(RCC->APB1ENR |= (1 << 14))				/*enable peripheral clock at SPI2*/
 #define SPI3_CLK_EN()					(RCC->APB1ENR |= (1 << 15))				/*enable peripheral clock at SPI3*/
+#define SPI4_CLK_EN()					(RCC->APB2ENR |= (1 << 13))				/*enable peripheral clock at SPI4*/
 #define SPI5_CLK_EN()					(RCC->APB2ENR |= (1 << 20))				/*enable peripheral clock at SPI5*/
 
 #define SPI1_CLK_DIS()					(RCC->APB2ENR &= ~(1 << 12))			/*disable peripheral clock at SPI1*/
 #define SPI2_CLK_DIS()					(RCC->APB1ENR &= ~(1 << 14))			/*disable peripheral clock at SPI2*/
 #define SPI3_CLK_DIS()					(RCC->APB1ENR &= ~(1 << 15))			/*disable peripheral clock at SPI3*/
+#define SPI4_CLK_DIS()					(RCC->APB2ENR &= ~(1 << 13))			/*disable peripheral clock at SPI4*/
 #define SPI5_CLK_DIS()					(RCC->APB2ENR &= ~(1 << 20))			/*disable peripheral clock at SPI5*/
 
 /**
@@ -343,19 +355,19 @@ typedef struct{
 * @brief  structure of NVIC ARM CORTEX-M4
 */
 typedef struct {
-	volatile uint32_t ISER[8];     			    /**< Interrupt Set Enable Register n, array offset: 0x0, array step: 0x4 */
-	uint8_t RESERVED_0[96];
-	volatile uint32_t ICER[8];        		 	/**< Interrupt Clear Enable Register n, array offset: 0x80, array step: 0x4 */
-	uint8_t RESERVED_1[96];
-	volatile uint32_t ISPR[8];       		    /**< Interrupt Set Pending Register n, array offset: 0x100, array step: 0x4 */
-	uint8_t RESERVED_2[96];
-	volatile uint32_t ICPR[8];    		        /**< Interrupt Clear Pending Register n, array offset: 0x180, array step: 0x4 */
-	uint8_t RESERVED_3[96];
-	volatile uint32_t IABR[8];         			/**< Interrupt Active bit Register n, array offset: 0x200, array step: 0x4 */
-	uint8_t RESERVED_4[224];
-	volatile uint8_t IP[240];              		/**< Interrupt Priority Register n, array offset: 0x300, array step: 0x1 */
-	uint8_t RESERVED_5[2576];
-	volatile uint32_t STIR;      				/**< Software Trigger Interrupt Register, offset: 0xE00 */
+	volatile uint32 ISER[8];     			    /**< Interrupt Set Enable Register n, array offset: 0x0, array step: 0x4 */
+	uint8 reserved0[96];
+	volatile uint32 ICER[8];        		 	/**< Interrupt Clear Enable Register n, array offset: 0x80, array step: 0x4 */
+	uint8 reserved1[96];
+	volatile uint32 ISPR[8];       		    /**< Interrupt Set Pending Register n, array offset: 0x100, array step: 0x4 */
+	uint8 reserved2[96];
+	volatile uint32 ICPR[8];    		        /**< Interrupt Clear Pending Register n, array offset: 0x180, array step: 0x4 */
+	uint8 reserved3[96];
+	volatile uint32 IABR[8];         			/**< Interrupt Active bit Register n, array offset: 0x200, array step: 0x4 */
+	uint8 reserved4[224];
+	volatile uint8 IP[240];              		/**< Interrupt Priority Register n, array offset: 0x300, array step: 0x1 */
+	uint8 reserved5[2576];
+	volatile uint32 STIR;      				/**< Software Trigger Interrupt Register, offset: 0xE00 */
 } NVIC_Type;
 
 /**
@@ -368,7 +380,37 @@ typedef struct
     volatile uint32 CVR;                 	/* SysTick Currrent Value Register */
     volatile uint32 CALIB;               	/* SysTick Calibration Calibration Register */
 
-} SysTick_TypeDef;
+} SysTick_Type;
+
+/**
+* @brief    Define structure of USART typedef
+*/
+typedef struct
+{
+    volatile uint32 SR;                  	/* Status register */
+    volatile uint32 DR;                  	/* Data register */
+    volatile uint32 BRR;                  	/* Baud rate register */
+    volatile uint32 CR1;                  	/* Control register 1 */
+    volatile uint32 CR2;                  	/* Control register 2 */
+    volatile uint32 CR3;                  	/* Control register 3 */
+    volatile uint32 GTPR;                  	/* Guard time and prescaler register */
+} USART_Type;
+
+/**
+* @brief    Define structure of SPI typedef
+*/
+typedef struct
+{
+    volatile uint32 CR1;                  	/* SPI co+ntrol register 1 */
+    volatile uint32 CR2;                  	/* SPI control register 2 */
+    volatile uint32 SR;                  	/* SPI status register */
+    volatile uint32 DR;                  	/* SPI data register */
+    volatile uint32 CRCPR;                  /* SPI CRC polynomial register */
+    volatile uint32 RXCRCR;                 /* SPI RX CRC register */
+    volatile uint32 TXCRCR;                 /* SPI TX CRC register */
+    volatile uint32 I2SCFGR;				/* SPI_I2S configuration register  */
+    volatile uint32 I2SPR;                  /* SPI_I2S prescaler register */
+} SPI_Type;
 
 /******************************************************************************
  *  GLOBAL VARIABLES

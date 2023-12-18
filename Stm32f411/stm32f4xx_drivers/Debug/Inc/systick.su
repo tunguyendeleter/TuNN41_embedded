@@ -1,0 +1,3 @@
+../Inc/systick.c:22:6:SysTick_Init	16	static
+../Inc/systick.c:51:6:SysTick_StartTimer	4	static
+../Inc/systick.c:65:6:SysTick_StopTimer	4	static

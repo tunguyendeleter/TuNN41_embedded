@@ -1,0 +1,5 @@
+spi.c:10:6:SPI_PeriClockControl	13
+spi.c:40:6:SPI_Init	6
+spi.c:103:6:SPI_Write	5
+spi.c:136:6:SPI_Read	5
+spi.c:168:7:SPI_GetFlagStatus	1

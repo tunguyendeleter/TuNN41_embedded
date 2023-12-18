@@ -52,6 +52,12 @@
 #define GPIO_PIN_PD					2
 
 /**
+* @GPIO_PIN_MODE
+* @brief  GPIO pin modes
+*/
+#define GPIO_ALT_NUM(x)				x
+
+/**
 * @brief  GPIO pin number
 */
 #define GPIO_PIN_NUM(x)				x

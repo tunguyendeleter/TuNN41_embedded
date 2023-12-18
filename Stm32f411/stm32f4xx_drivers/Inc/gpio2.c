@@ -95,7 +95,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 	temp = 0;
 
 	/*5. Configure the alt function*/
-	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinAltFunMode == GPIO_MODE_ALT)
+	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ALT)
 	{
 		uint8 temp1 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber % 8;
 		uint8 temp2 = pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber / 8;

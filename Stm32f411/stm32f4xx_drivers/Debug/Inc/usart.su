@@ -1,0 +1,10 @@
+../Inc/usart.c:10:6:USART_PeriClockControl	16	static
+../Inc/usart.c:32:6:USART_Init	24	static
+../Inc/usart.c:145:6:USART_SetBaudRate	40	static
+../Inc/usart.c:211:7:USART_GetFlagStatus	24	static
+../Inc/usart.c:262:6:USART_ClearFlagStatus	16	static
+../Inc/usart.c:267:6:USART_Write	40	static
+../Inc/usart.c:298:6:USART_Read	40	static
+../Inc/usart.c:327:7:USART_WriteIT	32	static
+../Inc/usart.c:359:7:USART_ReadIT	32	static
+../Inc/usart.c:392:6:USART_IRQHandling	24	static

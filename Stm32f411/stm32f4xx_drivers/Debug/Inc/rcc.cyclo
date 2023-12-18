@@ -1,0 +1,3 @@
+rcc.c:6:8:RCC_GetPLLValue	1
+rcc.c:11:8:RCC_GetPCLK1Value	8
+rcc.c:55:8:RCC_GetPCLK2Value	8
