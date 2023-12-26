@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "max7219.h": "c",
+        "clock.h": "c",
+        "common_s32k144.h": "c",
+        "sevenseg.h": "c",
+        "nvic.h": "c",
+        "lpit.h": "c"
+    }
+}
