@@ -1,0 +1,18 @@
+--cpu=Cortex-M4.fp.sp
+".\objects\port.o"
+".\objects\nvic.o"
+".\objects\systick.o"
+".\objects\lpuart.o"
+".\objects\clock.o"
+".\objects\lpit.o"
+".\objects\adc.o"
+".\objects\lpspi.o"
+".\objects\mockproject.o"
+".\objects\sevenseg.o"
+".\objects\startup.o"
+".\objects\startup_s32k144.o"
+".\objects\system_s32k144.o"
+--strict --scatter "C:\Users\tungu\AppData\Local\Arm\Packs\Keil\S32_SDK_DFP\1.5.0\platform\devices\S32K144\linker\armc\S32K144_64_flash.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\S32K144.map" -o .\Objects\S32K144.axf
