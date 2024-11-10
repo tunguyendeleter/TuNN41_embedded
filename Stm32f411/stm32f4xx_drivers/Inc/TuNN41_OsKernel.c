@@ -21,14 +21,14 @@
 /**
  * @brief  Init timescale of systick timer in kernel
  */
-static uint32 MILLIS_PRESCALER = 0;
-static uint32 Os_Quanta = 0;
+static uint32 MILLIS_PRESCALER = OS_ZERO;
+static uint32 Os_Quanta = OS_ZERO;
 
 /**
  * @brief  Init number of threads are configured in OS 
  */
-static uint16 Os_NumberOfThread = 0;
-static uint16 Os_NumOfPeriThread = 0;
+static uint16 Os_NumberOfThread = OS_ZERO;
+static uint16 Os_NumOfPeriThread = OS_ZERO;
 
 /**
  * @brief  Init current pointer to Thread Control Block
@@ -53,6 +53,15 @@ Os_TcbType Os_TCB[NUMBER_OF_THREAD];
  *  GLOBAL FUNCTION
  *****************************************************************************/
 #if(DYNAMIC_ALLOCATION == STD_ON)
+/******************************************************************************
+ * Function name:                   :Os_KernelStackInit
+ * Description:                     :This function allocate a stack region based on the heap region in memory 
+ * Input parameter:                 :ThreadTask (address of task) 
+ *                                  :StackSize (stack size)
+ * Output parameter:                :None
+ * return:                          :E_OK(success)
+ *                                  :E_NOT_OK(fail to allocate stack memory)
+ *****************************************************************************/
 Os_ReturnType Os_KernelStackInit(void (*ThreadTask)(void), uint32 StackSize)
 {
     /* Initialize local variables */
@@ -138,6 +147,14 @@ Os_ReturnType Os_KernelStackInit(void (*ThreadTask)(void), uint32 StackSize)
 
 
 #if(DYNAMIC_ALLOCATION == STD_ON)
+/******************************************************************************
+ * Function name:                   :Os_KernelStackRelease
+ * Description:                     :This function release a stack region based on the heap region in memory
+ * Input parameter:                 :ThreadTask (address of task) 
+ * Output parameter:                :None
+ * return:                          :E_OK(success)
+ *                                  :E_NOT_OK(fail to release stack memory)
+ *****************************************************************************/
 Os_ReturnType Os_KernelStackRelease(void (*ThreadTask)(void))
 {
     /* Initialize local variables */
@@ -192,6 +209,13 @@ Os_ReturnType Os_KernelStackRelease(void (*ThreadTask)(void))
 
 
 #if(DYNAMIC_ALLOCATION == STD_OFF && NUMBER_OF_THREAD > 0)
+/******************************************************************************
+ * Function name:                   :Os_KernelStackInit
+ * Description:                     :This function init a stack region on RAM in memory
+ * Input parameter:                 :NumOfThread (number of thread: NUMBER_THREAD(x)) 
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void Os_KernelStackInit(uint32 NumOfThread)
 {
     for (uint32 stackIdx = 0; stackIdx < NumOfThread; stackIdx++)
@@ -222,6 +246,14 @@ void Os_KernelStackInit(uint32 NumOfThread)
 #endif
 
 #if(DYNAMIC_ALLOCATION == STD_OFF && NUMBER_OF_THREAD > 0)
+/******************************************************************************
+ * Function name:                   :Os_KernelAddThread
+ * Description:                     :This function add tasks to TCB and link TCB together
+ * Input parameter:                 :NumOfThread (number of thread: NUMBER_THREAD(x)) 
+ *                                  :... (Follow by x number of addresses of tasks)
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void Os_KernelAddThread(uint32 NumOfThread, ...)
 {
     Os_NumberOfThread = NumOfThread;
@@ -254,12 +286,26 @@ void Os_KernelAddThread(uint32 NumOfThread, ...)
 }
 #endif
 
+/******************************************************************************
+ * Function name:                   :Os_KernelInit
+ * Description:                     :This function init MILLIS_PRESCALER, and Os_Quanta varible
+ * Input parameter:                 :quanta (period for a thread running in scheduler) 
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void Os_KernelInit(uint32 quanta)
 {
     MILLIS_PRESCALER = (BUS_DIV_8/1000);
     Os_Quanta = quanta;
 }
 
+/******************************************************************************
+ * Function name:                   :Os_KernelLaunch
+ * Description:                     :This function init a systick timer with MILLIS_PRESCALER
+ * Input parameter:                 :None
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void Os_KernelLaunch(void)
 {
     /* Disable timer to configure timer */
@@ -284,6 +330,13 @@ void Os_KernelLaunch(void)
 	Os_SchedulerLaunch();
 }
 
+/******************************************************************************
+ * Function name:                   :Os_ThreadYield
+ * Description:                     :This function release resource to other threads before timeout quanta
+ * Input parameter:                 :None
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void Os_ThreadYield(void)
 {
     /* Clear current value */
@@ -293,11 +346,25 @@ void Os_ThreadYield(void)
     ICSR |= (1 << ICSR_PENDSTSET_SHIFT);
 }
 
+/******************************************************************************
+ * Function name:                   :Os_SemaphoreInit
+ * Description:                     :This function init value of semaphore
+ * Input parameter:                 :value (initial value of semaphore)
+ * Output parameter:                :semaphore (semaphore value)
+ * return:                          :None
+ *****************************************************************************/
 void Os_SemaphoreInit(Os_Semaphore *semaphore, uint32 value)
 {
 	*semaphore = value;
 }
 
+/******************************************************************************
+ * Function name:                   :Os_SemaphoreGive
+ * Description:                     :This function give semaphore
+ * Input parameter:                 :None
+ * Output parameter:                :semaphore (semaphore value)
+ * return:                          :None
+ *****************************************************************************/
 void Os_SemaphoreGive(Os_Semaphore *semaphore)
 {
 	asm volatile("CPSID I");
@@ -305,6 +372,13 @@ void Os_SemaphoreGive(Os_Semaphore *semaphore)
 	asm volatile("CPSIE I");
 }
 
+/******************************************************************************
+ * Function name:                   :Os_SpinLockWait
+ * Description:                     :This function block the Thread and wait for semaphore
+ * Input parameter:                 :None
+ * Output parameter:                :semaphore (semaphore value)
+ * return:                          :None
+ *****************************************************************************/
 void Os_SpinLockWait(Os_Semaphore *semaphore)
 {
 	asm volatile("CPSID I");
@@ -318,7 +392,13 @@ void Os_SpinLockWait(Os_Semaphore *semaphore)
 	asm volatile("CPSID I");
 }
 
-
+/******************************************************************************
+ * Function name:                   :Os_CooperativeWait
+ * Description:                     :This function block the Thread and release thread for semaphore
+ * Input parameter:                 :None
+ * Output parameter:                :semaphore (semaphore value)
+ * return:                          :None
+ *****************************************************************************/
 void Os_CooperativeWait(Os_Semaphore *semaphore)
 {
 	asm volatile("CPSID I");
@@ -333,7 +413,13 @@ void Os_CooperativeWait(Os_Semaphore *semaphore)
 	asm volatile("CPSID I");
 }
 
-
+/******************************************************************************
+ * Function name:                   :Os_SchedulerRoundRobin
+ * Description:                     :This function run scheduler with round robin
+ * Input parameter:                 :None
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void Os_SchedulerRoundRobin(void)
 {
 #if(SOFTWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
@@ -354,11 +440,27 @@ void Os_SchedulerRoundRobin(void)
     Os_CurrentTCB = Os_CurrentTCB->nextPtr;
 }
 
+/******************************************************************************
+ * Function name:                   :SysTick_Handler
+ * Description:                     :This function create PENSV exception by software
+ * Input parameter:                 :None
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void SysTick_Handler(void)
 {
     ICSR |= (1 << ICSR_PENDSVSET_SHIFT);
 }
 
+/******************************************************************************
+ * Function name:                   :Os_KernelAddPeriodicTask
+ * Description:                     :This function add periodic tasks to periodic TCB
+ * Input parameter:                 :NumOfPeriodicTask
+ *                                  :... (Follow by x number of addresses of periodic tasks)
+ * Output parameter:                :None
+ * return:                          :E_OK(assign tasks to TCB successfully)
+ *                                  :E_NOT_OK(fail to assign tasks to TCB)
+ *****************************************************************************/
 Os_ReturnType Os_KernelAddPeriodicTask(uint32 NumOfPeriodicTask, ...)
 {
     Os_ReturnType Retval = E_NOT_OK;
@@ -424,11 +526,16 @@ Os_ReturnType Os_KernelAddPeriodicTask(uint32 NumOfPeriodicTask, ...)
 }
 
 #if(HARDWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
+/******************************************************************************
+ * Function name:                   :Os_PeriodicTaskHardwareInit
+ * Description:                     :This function init hardware timer TIM2 for periodic TCB
+ * Input parameter:                 :Frequency (frequency to call exception)
+ *                                  :Priority (priority for ISR)
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void Os_PeriodicTaskHardwareInit(uint32 Frequency, uint8_t Priority)
 {
-    Os_PeriTcbType *lpCurrentPeriTCB = NULL_PTR; 
-    Os_PeriTcbType *lpCurrentPeriTCB2 = NULL_PTR;
-
     /* Disable global exceptions */
     asm volatile("CPSID I");
 
@@ -456,11 +563,20 @@ void Os_PeriodicTaskHardwareInit(uint32 Frequency, uint8_t Priority)
 #endif
 
 #if(HARDWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
+/******************************************************************************
+ * Function name:                   :Os_CallbackPeriodicTask
+ * Description:                     :This function is placed in exception handler to call periodic tasks
+ * Input parameter:                 :None
+ * Output parameter:                :None
+ * return:                          :None
+ *****************************************************************************/
 void Os_CallbackPeriodicTask(void)
 {
     Os_PeriTcbType *lpCurrentPeriTCB = Os_CurrentPeriTCB;
     while (lpCurrentPeriTCB != NULL_PTR)
     {
+        /* Loop to check all periodic TCB if timeleft is zero */
+        lpCurrentPeriTCB->TimeLeft--;
         if (lpCurrentPeriTCB->TimeLeft == OS_ZERO)
         {
             /* Call periodic task and update timeleft */

@@ -18,8 +18,8 @@
  * @brief  Config Thread allocation
  */
 #define DYNAMIC_ALLOCATION                      STD_ON
-#define SOFTWARE_PERIODIC_THREAD_SUPPORT        STD_ON
-#define HARDWARE_PERIODIC_THREAD_SUPPORT        STD_OFF
+#define SOFTWARE_PERIODIC_THREAD_SUPPORT        STD_OFF
+#define HARDWARE_PERIODIC_THREAD_SUPPORT        STD_ON
 
 /**
  * @brief  Config static stack size
@@ -188,7 +188,7 @@ extern void Os_KernelInit(uint32 quanta);
 extern void Os_KernelLaunch(void);
 
 /**
- * @brief  This function init a systick timer with MILLIS_PRESCALER
+ * @brief  This function release resource to other threads before timeout quanta
  */
 extern void Os_ThreadYield(void);
 
@@ -222,7 +222,7 @@ extern void Os_SchedulerRoundRobin(void);
  */
 extern Os_ReturnType Os_KernelAddPeriodicTask(uint32 NumOfPeriodicTask, ...);
 
-#if(SOFTWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
+#if(HARDWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
 /**
  * @brief  This function init hardware timer TIM2 for periodic TCB
  */
