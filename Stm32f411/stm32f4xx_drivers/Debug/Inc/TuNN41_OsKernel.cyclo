@@ -1,0 +1,12 @@
+TuNN41_OsKernel.c:56:15:Os_KernelStackInit	6
+TuNN41_OsKernel.c:141:15:Os_KernelStackRelease	8
+TuNN41_OsKernel.c:257:6:Os_KernelInit	1
+TuNN41_OsKernel.c:263:6:Os_KernelLaunch	1
+TuNN41_OsKernel.c:287:6:Os_ThreadYield	1
+TuNN41_OsKernel.c:296:6:Os_SemaphoreInit	1
+TuNN41_OsKernel.c:301:6:Os_SemaphoreGive	1
+TuNN41_OsKernel.c:308:6:Os_SpinLockWait	2
+TuNN41_OsKernel.c:322:6:Os_CooperativeWait	2
+TuNN41_OsKernel.c:337:6:Os_SchedulerRoundRobin	3
+TuNN41_OsKernel.c:357:6:SysTick_Handler	1
+TuNN41_OsKernel.c:362:15:Os_KernelAddPeriodicTask	7

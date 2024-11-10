@@ -1,6 +1,11 @@
+/******************************************************************************
+ *  INCLUDES
+ *****************************************************************************/
 #include "nvic.h"
 
-
+/******************************************************************************
+ *  GLOBAL FUNCTION
+ *****************************************************************************/
 void NVIC_IRQConfig(uint8 IRQNumber, uint8 IRQPriority, uint8 EnorDis)
 {
 	if(EnorDis == ENABLE)
@@ -16,5 +21,4 @@ void NVIC_IRQConfig(uint8 IRQNumber, uint8 IRQPriority, uint8 EnorDis)
 		/*setup ICER register*/
 		NVIC->ICER[IRQNumber/32] |= (1 << (IRQNumber % 32));
 	}
-
 }

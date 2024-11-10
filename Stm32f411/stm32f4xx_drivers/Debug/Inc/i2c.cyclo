@@ -1,0 +1,9 @@
+i2c.c:10:6:I2C_PeriClockControl	9
+i2c.c:32:6:I2C_Init	5
+i2c.c:84:7:I2C_GetFlagStatus	1
+i2c.c:92:6:I2C_MasterClearADDR	1
+i2c.c:101:6:I2C_MasterManageACK	2
+i2c.c:115:6:I2C_MasterWriteStart	1
+i2c.c:120:6:I2C_MasterWriteStop	1
+i2c.c:125:6:I2C_MasterWrite	7
+i2c.c:179:6:I2C_MasterRead	6

@@ -1,4 +1,4 @@
-gpio2.c:4:6:GPIO_PeriClockControl	15
+gpio2.c:3:6:GPIO_PeriClockControl	15
 gpio2.c:37:6:GPIO_Init	12
 gpio2.c:107:6:GPIO_DeInit	7
 gpio2.c:123:7:GPIO_ReadFromInputPin	1

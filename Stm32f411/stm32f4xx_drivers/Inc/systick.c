@@ -1,7 +1,7 @@
 /******************************************************************************
  *  INCLUDES
  *****************************************************************************/
-#include "nvic.h"
+#include "systick.h"
 #include "stm32f411xx.h"
 
 /******************************************************************************
@@ -19,25 +19,25 @@
  *
  */
 
-void SysTick_Init(uint32 CountValue)
+void SysTick_Init(uint32 CountValue, uint8 ClockSource)
 {
-    /* Disable timer to configure timer*/
-    SysTick->CSR &= ~(1 << 0);
+    /* Disable timer to configure timer */
+    SysTick->CSR &= ~(1 << SYSTICK_CSR_ENABLE_SHIFT);
 
     /* Configure clock source from processor */
-    SysTick->CSR |= (1 << 2);
+    SysTick->CSR |= (ClockSource << SYSTICK_CSR_CLKSOURCE_SHIFT);
 
     /* Enable interrupt request to  systick timer */
-    SysTick->CSR |= (1 << 1);
+    SysTick->CSR |= (1 << SYSTICK_CSR_TICKINT_SHIFT);
 
-    /* Reload value */
-    SysTick->RVR = CountValue;
+    /* Reload value [0:24] bits: max count value = 16,777,215 - 1 */
+    SysTick->RVR = CountValue & SYSTICK_CVR_CURRENT_MASK;
 
     /* Clear current value */
     SysTick->CVR = 1;
 
     /* Enable timer to configure timer*/
-    SysTick->CSR |= (1 << 0);
+    // SysTick->CSR |= (1 << SYSTICK_CSR_ENABLE_SHIFT);
 }
 
 /**
@@ -51,7 +51,7 @@ void SysTick_Init(uint32 CountValue)
 void SysTick_StartTimer(void)
 {
     /* Enable timer to configure timer*/
-    SysTick->CSR |= (1 << 0);
+    SysTick->CSR |= (1 << SYSTICK_CSR_ENABLE_SHIFT);
 }
 
 /**
@@ -65,5 +65,5 @@ void SysTick_StartTimer(void)
 void SysTick_StopTimer(void)
 {
     /* Disable timer to configure timer*/
-    SysTick->CSR &= ~(1 << 0);
+    SysTick->CSR &= ~(1 << SYSTICK_CSR_ENABLE_SHIFT);
 }

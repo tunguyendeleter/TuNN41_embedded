@@ -84,7 +84,7 @@ typedef struct{
 typedef struct{
 	GPIO_Type *pGPIOx;					/*This is a pointer to hold address of GPIO port to which the pins belong*/
 	GPIO_Config_Type GPIO_PinConfig;	/*This holds GPIO pin configuation settings*/
-}GPIO_Handle_t;
+}GPIO_Handle_Type;
 
 
 
@@ -99,7 +99,7 @@ extern void GPIO_PeriClockControl(GPIO_Type *pGPIOx, uint8 EnorDis);
 /**
 * @brief  this function initialize and deinitialize GPIO
 */
-extern void GPIO_Init(GPIO_Handle_t *pGPIOHandle);
+extern void GPIO_Init(GPIO_Handle_Type *pGPIOHandle);
 extern void GPIO_DeInit(GPIO_Type *pGPIOx);
 
 /**

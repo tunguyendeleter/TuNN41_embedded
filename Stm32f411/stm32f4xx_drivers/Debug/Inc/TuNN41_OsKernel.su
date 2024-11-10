@@ -1,0 +1,12 @@
+../Inc/TuNN41_OsKernel.c:56:15:Os_KernelStackInit	24	static,ignoring_inline_asm
+../Inc/TuNN41_OsKernel.c:141:15:Os_KernelStackRelease	32	static
+../Inc/TuNN41_OsKernel.c:257:6:Os_KernelInit	16	static
+../Inc/TuNN41_OsKernel.c:263:6:Os_KernelLaunch	8	static
+../Inc/TuNN41_OsKernel.c:287:6:Os_ThreadYield	4	static
+../Inc/TuNN41_OsKernel.c:296:6:Os_SemaphoreInit	16	static
+../Inc/TuNN41_OsKernel.c:301:6:Os_SemaphoreGive	16	static,ignoring_inline_asm
+../Inc/TuNN41_OsKernel.c:308:6:Os_SpinLockWait	16	static,ignoring_inline_asm
+../Inc/TuNN41_OsKernel.c:322:6:Os_CooperativeWait	16	static,ignoring_inline_asm
+../Inc/TuNN41_OsKernel.c:337:6:Os_SchedulerRoundRobin	16	static
+../Inc/TuNN41_OsKernel.c:357:6:SysTick_Handler	4	static
+../Inc/TuNN41_OsKernel.c:362:15:Os_KernelAddPeriodicTask	48	static,ignoring_inline_asm

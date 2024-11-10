@@ -1,4 +1,4 @@
-../Inc/gpio2.c:4:6:GPIO_PeriClockControl	16	static
+../Inc/gpio2.c:3:6:GPIO_PeriClockControl	16	static
 ../Inc/gpio2.c:37:6:GPIO_Init	32	static
 ../Inc/gpio2.c:107:6:GPIO_DeInit	16	static
 ../Inc/gpio2.c:123:7:GPIO_ReadFromInputPin	24	static

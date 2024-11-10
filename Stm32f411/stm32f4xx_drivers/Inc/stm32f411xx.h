@@ -18,7 +18,8 @@
 #define RESET 							DISABLE
 #define GPIO_PIN_SET 					SET
 #define GPIO_PIN_RESET 					RESET
-#define NULL							DISABLE
+#define NULL							((void*)0)
+#define NULL_PTR						((void*)0)
 
 /**
  * @brief  Define portcode function for given GPIOx peripheral
@@ -68,6 +69,9 @@
 #define I2C1_BASEADDR					(APB1_BASEADDR + 0x5400)				/*I2C1 base address*/
 #define I2C2_BASEADDR					(APB1_BASEADDR + 0x5800)				/*I2C2 base address*/
 #define I2C3_BASEADDR					(APB1_BASEADDR + 0x5C00)				/*I2C3 base address*/
+#define I2C1							((I2C_Type*)I2C1_BASEADDR)				/*I2C1 register pointer*/
+#define I2C2							((I2C_Type*)I2C2_BASEADDR)				/*I2C2 register pointer*/
+#define I2C3							((I2C_Type*)I2C3_BASEADDR)				/*I2C3 register pointer*/
 
 /**
  * @brief  Define base address of TIM modules
@@ -79,6 +83,12 @@
 #define TIM9_BASEADDR					(APB2_BASEADDR + 0x4000)				/*TIM9 base address*/
 #define TIM10_BASEADDR					(APB2_BASEADDR + 0x4400)				/*TIM10 base address*/
 #define TIM11_BASEADDR					(APB2_BASEADDR + 0x4800)				/*TIM11 base address*/
+#define TIM2							((TIM_Type*)TIM2_BASEADDR)				/*TIM2 register pointer*/
+#define TIM3							((TIM_Type*)TIM3_BASEADDR)				/*TIM3 register pointer*/
+#define TIM4							((TIM_Type*)TIM4_BASEADDR)				/*TIM4 register pointer*/
+#define TIM5							((TIM_Type*)TIM5_BASEADDR)				/*TIM5 register pointer*/
+#define TIM10							((TIM_Type*)TIM10_BASEADDR)				/*TIM10 register pointer*/
+#define TIM11							((TIM_Type*)TIM11_BASEADDR)				/*TIM11 register pointer*/
 
 /**
  * @brief  Define base address of USART modules
@@ -104,12 +114,17 @@
 #define SPI4							((SPI_Type*)SPI4_BASEADDR)				/*SPI4 register pointer*/
 #define SPI5							((SPI_Type*)SPI5_BASEADDR)				/*SPI5 register pointer*/
 
-
 /**
  * @brief  Define base address of RCC module
  */
 #define RCC_BASEADDR					(AHB1_BASEADDR + 0x3800)				/*RCC base address*/
 #define RCC								((RCC_Type*)RCC_BASEADDR)				/*RCC register pointer*/
+
+/**
+ * @brief  Define base address of TIM1 module
+ */
+#define TIM1_BASEADDR					(APB2_BASEADDR + 0x0000)				/*TIM1 base address*/
+#define TIM1							((TIM_Type*)TIM1_BASEADDR)				/*TIM1 register pointer*/
 
 /**
  * @brief  Define base address of EXTI module
@@ -127,7 +142,7 @@
  * @brief  Define base address of SYSCFG module
  */
 #define Systick_BASEADDR				(0XE000E010)							/*SYSTICK base address*/
-#define SysTick							((SysTick_Type*)Systick_BASEADDR)	/*SYSTICK register pointer*/
+#define SysTick							((SysTick_Type*)Systick_BASEADDR)		/*SYSTICK register pointer*/
 
 /**
 * @brief  define address of NVIC layer
@@ -155,6 +170,7 @@
 /**
  * @brief  Define TIMx clock enable and disable macros
  */
+#define TIM1_CLK_EN()					(RCC->APB2ENR |= (1 << 0))				/*enable peripheral clock at TIM1*/
 #define TIM2_CLK_EN()					(RCC->APB1ENR |= (1 << 0))				/*enable peripheral clock at TIM2*/
 #define TIM3_CLK_EN()					(RCC->APB1ENR |= (1 << 1))				/*enable peripheral clock at TIM3*/
 #define TIM4_CLK_EN()					(RCC->APB1ENR |= (1 << 2))				/*enable peripheral clock at TIM4*/
@@ -163,6 +179,7 @@
 #define TIM10_CLK_EN()					(RCC->APB2ENR |= (1 << 17))				/*enable peripheral clock at TIM10*/
 #define TIM11_CLK_EN()					(RCC->APB2ENR |= (1 << 18))				/*enable peripheral clock at TIM11*/
 
+#define TIM1_CLK_DIS()					(RCC->APB2ENR &= ~(1 << 0))				/*disable peripheral clock at TIM1*/
 #define TIM2_CLK_DIS()					(RCC->APB1ENR &= ~(1 << 0))				/*disable peripheral clock at TIM2*/
 #define TIM3_CLK_DIS()					(RCC->APB1ENR &= ~(1 << 1))				/*disable peripheral clock at TIM3*/
 #define TIM4_CLK_DIS()					(RCC->APB1ENR &= ~(1 << 2))				/*disable peripheral clock at TIM4*/
@@ -217,21 +234,21 @@
 /**
  * @brief  Define macros to reset peripheral GPIOx
  */
-#define GPIOA_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 0)); (RCC->AHB1RSTR &= ~(1 << 0));}while(0)	/*reset register at GPIOA*/
-#define GPIOB_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 1)); (RCC->AHB1RSTR &= ~(1 << 1));}while(0)	/*reset register at GPIOB*/
-#define GPIOC_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 2)); (RCC->AHB1RSTR &= ~(1 << 2));}while(0)	/*reset register at GPIOC*/
-#define GPIOD_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 3)); (RCC->AHB1RSTR &= ~(1 << 3));}while(0)	/*reset register at GPIOD*/
-#define GPIOE_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 4)); (RCC->AHB1RSTR &= ~(1 << 4));}while(0)	/*reset register at GPIOE*/
-#define GPIOH_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &= ~(1 << 7));}while(0)	/*reset register at GPIOH*/
+#define GPIOA_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 0)); (RCC->AHB1RSTR &= ~(1 << 0));}while(0)		/*reset register at GPIOA*/
+#define GPIOB_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 1)); (RCC->AHB1RSTR &= ~(1 << 1));}while(0)		/*reset register at GPIOB*/
+#define GPIOC_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 2)); (RCC->AHB1RSTR &= ~(1 << 2));}while(0)		/*reset register at GPIOC*/
+#define GPIOD_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 3)); (RCC->AHB1RSTR &= ~(1 << 3));}while(0)		/*reset register at GPIOD*/
+#define GPIOE_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 4)); (RCC->AHB1RSTR &= ~(1 << 4));}while(0)		/*reset register at GPIOE*/
+#define GPIOH_REG_RESET()			do{(RCC->AHB1RSTR |= (1 << 7)); (RCC->AHB1RSTR &= ~(1 << 7));}while(0)		/*reset register at GPIOH*/
 
 /**
  * @brief  Define macros to reset peripheral TIMx
  */
-#define TIM1_REG_RESET()			do{(RCC->APB2RSTR |= (1 << 0)); (RCC->APB2RSTR &= ~(1 << 0));}while(0)	/*reset register at TIM1*/
-#define TIM2_REG_RESET()			do{(RCC->APB1RSTR |= (1 << 0)); (RCC->APB1RSTR &= ~(1 << 0));}while(0)	/*reset register at TIM2*/
-#define TIM3_REG_RESET()			do{(RCC->APB1RSTR |= (1 << 1)); (RCC->APB1RSTR &= ~(1 << 1));}while(0)	/*reset register at TIM3*/
-#define TIM4_REG_RESET()			do{(RCC->APB1RSTR |= (1 << 2)); (RCC->APB1RSTR &= ~(1 << 2));}while(0)	/*reset register at TIM4*/
-#define TIM5_REG_RESET()			do{(RCC->APB1RSTR |= (1 << 3)); (RCC->APB1RSTR &= ~(1 << 3));}while(0)	/*reset register at TIM5*/
+#define TIM1_REG_RESET()			do{(RCC->APB2RSTR |= (1 << 0)); (RCC->APB2RSTR &= ~(1 << 0));}while(0)		/*reset register at TIM1*/
+#define TIM2_REG_RESET()			do{(RCC->APB1RSTR |= (1 << 0)); (RCC->APB1RSTR &= ~(1 << 0));}while(0)		/*reset register at TIM2*/
+#define TIM3_REG_RESET()			do{(RCC->APB1RSTR |= (1 << 1)); (RCC->APB1RSTR &= ~(1 << 1));}while(0)		/*reset register at TIM3*/
+#define TIM4_REG_RESET()			do{(RCC->APB1RSTR |= (1 << 2)); (RCC->APB1RSTR &= ~(1 << 2));}while(0)		/*reset register at TIM4*/
+#define TIM5_REG_RESET()			do{(RCC->APB1RSTR |= (1 << 3)); (RCC->APB1RSTR &= ~(1 << 3));}while(0)		/*reset register at TIM5*/
 #define TIM9_REG_RESET()			do{(RCC->APB2RSTR |= (1 << 16)); (RCC->APB2RSTR &= ~(1 << 16));}while(0)	/*reset register at TIM9*/
 #define TIM10_REG_RESET()			do{(RCC->APB2RSTR |= (1 << 17)); (RCC->APB2RSTR &= ~(1 << 17));}while(0)	/*reset register at TIM10*/
 #define TIM11_REG_RESET()			do{(RCC->APB2RSTR |= (1 << 18)); (RCC->APB2RSTR &= ~(1 << 18));}while(0)	/*reset register at TIM11*/
@@ -332,12 +349,12 @@ typedef struct{
 * @brief structure of EXTI register
 */
 typedef struct{
-	volatile uint32 IMR;
-	volatile uint32 EMR;
-	volatile uint32 RTSR;
-	volatile uint32 FTSR;
-	volatile uint32 SWIER;
-	volatile uint32 PR;
+	volatile uint32 IMR;   					/*Interrupt mask register - address offset: 0x00*/
+	volatile uint32 EMR;					/*Event mask register - address offset: 0x04*/
+	volatile uint32 RTSR;					/*Rising trigger selection register - address offset: 0x08*/
+	volatile uint32 FTSR;					/*Falling trigger selection register - address offset: 0x0C*/
+	volatile uint32 SWIER;					/*Software interrupt event register - address offset: 0x10*/
+	volatile uint32 PR;						/*Pending register - address offset: 0x14*/
 }EXTI_Type;
 
 /**
@@ -355,19 +372,19 @@ typedef struct{
 * @brief  structure of NVIC ARM CORTEX-M4
 */
 typedef struct {
-	volatile uint32 ISER[8];     			    /**< Interrupt Set Enable Register n, array offset: 0x0, array step: 0x4 */
+	volatile uint32 ISER[8];				/**< Interrupt Set Enable Register n, array offset: 0x0, array step: 0x4 */
 	uint8 reserved0[96];
-	volatile uint32 ICER[8];        		 	/**< Interrupt Clear Enable Register n, array offset: 0x80, array step: 0x4 */
+	volatile uint32 ICER[8];				/**< Interrupt Clear Enable Register n, array offset: 0x80, array step: 0x4 */
 	uint8 reserved1[96];
-	volatile uint32 ISPR[8];       		    /**< Interrupt Set Pending Register n, array offset: 0x100, array step: 0x4 */
+	volatile uint32 ISPR[8];				/**< Interrupt Set Pending Register n, array offset: 0x100, array step: 0x4 */
 	uint8 reserved2[96];
-	volatile uint32 ICPR[8];    		        /**< Interrupt Clear Pending Register n, array offset: 0x180, array step: 0x4 */
+	volatile uint32 ICPR[8];				/**< Interrupt Clear Pending Register n, array offset: 0x180, array step: 0x4 */
 	uint8 reserved3[96];
-	volatile uint32 IABR[8];         			/**< Interrupt Active bit Register n, array offset: 0x200, array step: 0x4 */
+	volatile uint32 IABR[8];         		/**< Interrupt Active bit Register n, array offset: 0x200, array step: 0x4 */
 	uint8 reserved4[224];
-	volatile uint8 IP[240];              		/**< Interrupt Priority Register n, array offset: 0x300, array step: 0x1 */
+	volatile uint8 IP[240];              	/**< Interrupt Priority Register n, array offset: 0x300, array step: 0x1 */
 	uint8 reserved5[2576];
-	volatile uint32 STIR;      				/**< Software Trigger Interrupt Register, offset: 0xE00 */
+	volatile uint32 STIR;					/**< Software Trigger Interrupt Register, offset: 0xE00 */
 } NVIC_Type;
 
 /**
@@ -401,7 +418,7 @@ typedef struct
 */
 typedef struct
 {
-    volatile uint32 CR1;                  	/* SPI co+ntrol register 1 */
+    volatile uint32 CR1;                  	/* SPI control register 1 */
     volatile uint32 CR2;                  	/* SPI control register 2 */
     volatile uint32 SR;                  	/* SPI status register */
     volatile uint32 DR;                  	/* SPI data register */
@@ -411,6 +428,48 @@ typedef struct
     volatile uint32 I2SCFGR;				/* SPI_I2S configuration register  */
     volatile uint32 I2SPR;                  /* SPI_I2S prescaler register */
 } SPI_Type;
+
+/**
+* @brief    Define structure of I2C typedef
+*/
+typedef struct
+{
+    volatile uint32 CR1;                  	/* I2C Control register 1 */
+    volatile uint32 CR2;                  	/* I2C Control register 2 */
+    volatile uint32 OAR1;                  	/* I2C Own address register 1 */
+    volatile uint32 OAR2;                  	/* I2C Own address register 2 */
+    volatile uint32 DR;                 	/* I2C Data register  */
+    volatile uint32 SR1;                 	/* I2C Status register 1 */
+    volatile uint32 SR2;					/* I2C Status register 2 */
+    volatile uint32 CCR;                  	/* I2C Clock control register */
+    volatile uint32 TRISE;					/* I2C TRISE register */
+    volatile uint32 FLTR ;					/* I2C FLTR register */
+} I2C_Type;
+
+typedef struct
+{
+	volatile uint32_t CR1;         			/*!< TIM control register 1,              Address offset: 0x00 */
+	volatile uint32_t CR2;         			/*!< TIM control register 2,              Address offset: 0x04 */
+	volatile uint32_t SMCR;        			/*!< TIM slave mode control register,     Address offset: 0x08 */
+	volatile uint32_t DIER;        			/*!< TIM DMA/interrupt enable register,   Address offset: 0x0C */
+	volatile uint32_t SR;          			/*!< TIM status register,                 Address offset: 0x10 */
+	volatile uint32_t EGR;         			/*!< TIM event generation register,       Address offset: 0x14 */
+	volatile uint32_t CCMR1;       			/*!< TIM capture/compare mode register 1, Address offset: 0x18 */
+	volatile uint32_t CCMR2;       			/*!< TIM capture/compare mode register 2, Address offset: 0x1C */
+	volatile uint32_t CCER;        			/*!< TIM capture/compare enable register, Address offset: 0x20 */
+	volatile uint32_t CNT;         			/*!< TIM counter register,                Address offset: 0x24 */
+	volatile uint32_t PSC;         			/*!< TIM prescaler,                       Address offset: 0x28 */
+	volatile uint32_t ARR;         			/*!< TIM auto-reload register,            Address offset: 0x2C */
+	volatile uint32_t RCR;         			/*!< TIM repetition counter register,     Address offset: 0x30 */
+	volatile uint32_t CCR1;        			/*!< TIM capture/compare register 1,      Address offset: 0x34 */
+	volatile uint32_t CCR2;        			/*!< TIM capture/compare register 2,      Address offset: 0x38 */
+	volatile uint32_t CCR3;        			/*!< TIM capture/compare register 3,      Address offset: 0x3C */
+	volatile uint32_t CCR4;        			/*!< TIM capture/compare register 4,      Address offset: 0x40 */
+	volatile uint32_t BDTR;        			/*!< TIM break and dead-time register,    Address offset: 0x44 */
+	volatile uint32_t DCR;         			/*!< TIM DMA control register,            Address offset: 0x48 */
+	volatile uint32_t DMAR;        			/*!< TIM DMA address for full transfer,   Address offset: 0x4C */
+	volatile uint32_t OR;          			/*!< TIM option register,                 Address offset: 0x50 */
+} TIM_Type;
 
 /******************************************************************************
  *  GLOBAL VARIABLES

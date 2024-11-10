@@ -259,6 +259,7 @@ uint8 USART_GetFlagStatus(USART_Type *pUSARTx, uint8 StatusFlagShift)
 
     return temp;
 }
+
 void USART_ClearFlagStatus(USART_Type *pUSARTx, uint8 StatusFlagShift)
 {
     pUSARTx->SR &= ~(1 << StatusFlagShift);
