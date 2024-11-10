@@ -175,25 +175,25 @@ int main(void)
 #if(DYNAMIC_ALLOCATION == STD_OFF)
 	/* Static allocation */
 	Os_SemaphoreInit(&semaphore, 1);
+	Os_KernelInit(10);
 	Os_KernelStackInit(NUMBER_THREAD(3));
 	Os_KernelAddThread(NUMBER_THREAD(3), ThreadTask, ThreadTask2, ThreadTask3);
 #if(HARDWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
 	Os_PeriodicTaskHardwareInit(1000, 5);
 #endif
 	Os_KernelAddPeriodicTask(NUMBER_PERIODIC_THREAD(2), ThreadTask4, 1000,ThreadTask5, 2000);
-	Os_KernelInit(10);
 	Os_KernelLaunch();
 #else
 	/* Dynamic allocation */
 	Os_SemaphoreInit(&semaphore, 1);
+	Os_KernelInit(10);
 	Os_KernelStackInit(ThreadTask, 100);
 	Os_KernelStackInit(ThreadTask2, 100);
 	Os_KernelStackInit(ThreadTask3, 100);
 #if(HARDWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
 	Os_PeriodicTaskHardwareInit(1000, 5);
 #endif
-	Os_KernelAddPeriodicTask(NUMBER_PERIODIC_THREAD(2), ThreadTask4, 1000,ThreadTask5, 2000);
-	Os_KernelInit(10);
+	Os_KernelAddPeriodicTask(NUMBER_PERIODIC_THREAD(2), BlinkLed, 1000, ThreadTask4, 2000);
 	Os_KernelLaunch();
 #endif
 
@@ -209,9 +209,9 @@ int main(void)
 /*  Exception handlers                                          */
 /****************************************************************/
 
+#if(HARDWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
 void TIM2_IRQHandler(){
 	TIM2->SR = 0;
-#if(HARDWARE_PERIODIC_THREAD_SUPPORT == STD_ON)
 	Os_CallbackPeriodicTask();
-#endif
 }
+#endif
